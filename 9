@@ -1,0 +1,80 @@
+Create student-related tables with constraints such as:
+● PRIMARY KEY
+● FOREIGN KEY
+● NOT NULL
+● UNIQUE
+
+CREATE DATABASE student_management;
+Query OK, 1 row affected (0.01 sec)
+
+USE student_management;
+Database changed
+
+CREATE TABLE department(
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50) NOT NULL UNIQUE,
+    location VARCHAR(50)
+);
+Query OK, 0 rows affected (0.05 sec)
+
+CREATE TABLE student(
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    age INT,
+    dept_id INT,
+    FOREIGN KEY(dept_id) REFERENCES department(dept_id)
+);
+Query OK, 0 rows affected (0.06 sec)
+
+INSERT INTO department
+VALUES
+(101,'Computer','Pune'),
+(102,'IT','Mumbai'),
+(103,'Electronics','Delhi');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM department;
++---------+-------------+----------+
+| dept_id | dept_name   | location |
++---------+-------------+----------+
+|     101 | Computer    | Pune     |
+|     102 | IT          | Mumbai   |
+|     103 | Electronics | Delhi    |
++---------+-------------+----------+
+3 rows in set (0.00 sec)
+
+INSERT INTO student
+VALUES
+(1,'Amit','amit@gmail.com',20,101),
+(2,'Neha','neha@gmail.com',21,102),
+(3,'Rahul','rahul@gmail.com',19,103);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM student;
++------------+--------------+------------------+------+---------+
+| student_id | student_name | email            | age  | dept_id |
++------------+--------------+------------------+------+---------+
+|          1 | Amit         | amit@gmail.com   |   20 |     101 |
+|          2 | Neha         | neha@gmail.com   |   21 |     102 |
+|          3 | Rahul        | rahul@gmail.com  |   19 |     103 |
++------------+--------------+------------------+------+---------+
+3 rows in set (0.00 sec)
+
+INSERT INTO student
+VALUES
+(4,'Priya','amit@gmail.com',22,101);
+ERROR 1062 (23000): Duplicate entry 'amit@gmail.com' for key 'email'
+
+INSERT INTO student
+VALUES
+(5,'Sneha','sneha@gmail.com',20,110);
+ERROR 1452 (23000): Cannot add or update a child row:
+a foreign key constraint fails
+
+INSERT INTO student(student_id,email,age,dept_id)
+VALUES
+(6,'abc@gmail.com',21,101);
+ERROR 1364 (HY000): Field 'student_name' doesn't have a default value
