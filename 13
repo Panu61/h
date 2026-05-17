@@ -1,0 +1,125 @@
+ Perform Sorting and Grouping using:
+● ORDER BY
+● GROUP BY
+● HAVING
+
+CREATE DATABASE sorting_grouping_db;
+Query OK, 1 row affected (0.01 sec)
+
+USE sorting_grouping_db;
+Database changed
+
+CREATE TABLE student(
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(50),
+    department VARCHAR(50),
+    marks INT
+);
+Query OK, 0 rows affected (0.05 sec)
+
+INSERT INTO student
+VALUES
+(1,'Amit','Computer',85),
+(2,'Neha','IT',90),
+(3,'Rahul','Computer',75),
+(4,'Priya','Electronics',88),
+(5,'Sneha','IT',92);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+SELECT * FROM student;
++------------+--------------+-------------+-------+
+| student_id | student_name | department  | marks |
++------------+--------------+-------------+-------+
+|          1 | Amit         | Computer    |    85 |
+|          2 | Neha         | IT          |    90 |
+|          3 | Rahul        | Computer    |    75 |
+|          4 | Priya        | Electronics |    88 |
+|          5 | Sneha        | IT          |    92 |
++------------+--------------+-------------+-------+
+5 rows in set (0.00 sec)
+
+SELECT * FROM student
+ORDER BY marks ASC;
++------------+--------------+-------------+-------+
+| student_id | student_name | department  | marks |
++------------+--------------+-------------+-------+
+|          3 | Rahul        | Computer    |    75 |
+|          1 | Amit         | Computer    |    85 |
+|          4 | Priya        | Electronics |    88 |
+|          2 | Neha         | IT          |    90 |
+|          5 | Sneha        | IT          |    92 |
++------------+--------------+-------------+-------+
+5 rows in set (0.00 sec)
+
+SELECT * FROM student
+ORDER BY marks DESC;
++------------+--------------+-------------+-------+
+| student_id | student_name | department  | marks |
++------------+--------------+-------------+-------+
+|          5 | Sneha        | IT          |    92 |
+|          2 | Neha         | IT          |    90 |
+|          4 | Priya        | Electronics |    88 |
+|          1 | Amit         | Computer    |    85 |
+|          3 | Rahul        | Computer    |    75 |
++------------+--------------+-------------+-------+
+5 rows in set (0.00 sec)
+
+SELECT department,
+       AVG(marks) AS average_marks
+FROM student
+GROUP BY department;
++-------------+---------------+
+| department  | average_marks |
++-------------+---------------+
+| Computer    |       80.0000 |
+| IT          |       91.0000 |
+| Electronics |       88.0000 |
++-------------+---------------+
+3 rows in set (0.00 sec)
+
+SELECT department,
+       COUNT(*) AS total_students
+FROM student
+GROUP BY department;
+
+SELECT department,
+       COUNT(*) AS total_students
+FROM student
+GROUP BY department;
++-------------+----------------+
+| department  | total_students |
++-------------+----------------+
+| Computer    |              2 |
+| IT          |              2 |
+| Electronics |              1 |
++-------------+----------------+
+3 rows in set (0.00 sec)
+
+SELECT department,
+       AVG(marks) AS average_marks
+FROM student
+GROUP BY department
+HAVING AVG(marks) > 85;
++-------------+---------------+
+| department  | average_marks |
++-------------+---------------+
+| IT          |       91.0000 |
+| Electronics |       88.0000 |
++-------------+---------------+
+2 rows in set (0.00 sec)
+
+SELECT department,
+       COUNT(*) AS total_students
+FROM student
+GROUP BY department
+HAVING COUNT(*) > 1;
++------------+----------------+
+| department | total_students |
++------------+----------------+
+| Computer   |              2 |
+| IT         |              2 |
++------------+----------------+
+2 rows in set (0.00 sec)
