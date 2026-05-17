@@ -1,0 +1,104 @@
+Perform SQL queries using Set Operators (UNION, INTERSECT, MINUS).
+
+CREATE DATABASE set_operator_db;
+Query OK, 1 row affected (0.01 sec)
+
+USE set_operator_db;
+Database changed
+
+CREATE TABLE student1(
+    id INT,
+    name VARCHAR(50)
+);
+Query OK, 0 rows affected (0.05 sec)
+
+INSERT INTO student1
+VALUES
+(1,'Amit'),
+(2,'Neha'),
+(3,'Rahul');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM student1;
++------+--------+
+| id   | name   |
++------+--------+
+|    1 | Amit   |
+|    2 | Neha   |
+|    3 | Rahul  |
++------+--------+
+3 rows in set (0.00 sec)
+
+CREATE TABLE student2(
+    id INT,
+    name VARCHAR(50)
+);
+Query OK, 0 rows affected (0.04 sec)
+
+INSERT INTO student2
+VALUES
+(2,'Neha'),
+(3,'Rahul'),
+(4,'Priya');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM student2;
++------+--------+
+| id   | name   |
++------+--------+
+|    2 | Neha   |
+|    3 | Rahul  |
+|    4 | Priya  |
++------+--------+
+3 rows in set (0.00 sec)
+
+SELECT name FROM student1
+UNION
+SELECT name FROM student2;
+
++--------+
+| name   |
++--------+
+| Amit   |
+| Neha   |
+| Rahul  |
+| Priya  |
++--------+
+4 rows in set (0.00 sec)
+
+SELECT name FROM student1
+UNION ALL
+SELECT name FROM student2;
++--------+
+| name   |
++--------+
+| Amit   |
+| Neha   |
+| Rahul  |
+| Neha   |
+| Rahul  |
+| Priya  |
++--------+
+6 rows in set (0.00 sec)
+
+SELECT name FROM student1
+INTERSECT
+SELECT name FROM student2;
++--------+
+| name   |
++--------+
+| Neha   |
+| Rahul  |
++--------+
+2 rows in set (0.00 sec)
+SELECT name FROM student1
+EXCEPT
+SELECT name FROM student2;
++--------+
+| name   |
++--------+
+| Amit   |
++--------+
+1 row in set (0.00 sec)
