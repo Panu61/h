@@ -1,0 +1,120 @@
+Write and execute PL/SQL Functions for suitable database tasks.
+
+CREATE DATABASE function_db;
+Query OK, 1 row affected (0.01 sec)
+
+USE function_db;
+Database changed
+
+CREATE TABLE employee(
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    salary INT
+);
+Query OK, 0 rows affected (0.05 sec)
+
+INSERT INTO employee
+VALUES
+(1,'Amit',30000),
+(2,'Neha',40000),
+(3,'Rahul',35000);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM employee;
++--------+----------+--------+
+| emp_id | emp_name | salary |
++--------+----------+--------+
+|      1 | Amit     |  30000 |
+|      2 | Neha     |  40000 |
+|      3 | Rahul    |  35000 |
++--------+----------+--------+
+3 rows in set (0.00 sec)
+
+DELIMITER //
+CREATE FUNCTION add_numbers(
+    a INT,
+    b INT
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    RETURN a + b;
+END //
+Query OK, 0 rows affected (0.02 sec)
+DELIMITER ;
+
+SELECT add_numbers(10,20);
++--------------------+
+| add_numbers(10,20) |
++--------------------+
+|                 30 |
++--------------------+
+1 row in set (0.00 sec)
+
+DELIMITER //
+CREATE FUNCTION calc_bonus(
+    sal INT
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE bonus INT;
+
+    SET bonus = sal * 0.10;
+
+    RETURN bonus;
+END //
+Query OK, 0 rows affected (0.02 sec)
+DELIMITER ;
+
+SELECT calc_bonus(50000);
++--------------------+
+| calc_bonus(50000)  |
++--------------------+
+|               5000 |
++--------------------+
+1 row in set (0.00 sec)
+
+SELECT emp_name,
+       salary,
+       calc_bonus(salary) AS bonus
+FROM employee;
++----------+--------+-------+
+| emp_name | salary | bonus |
++----------+--------+-------+
+| Amit     |  30000 |  3000 |
+| Neha     |  40000 |  4000 |
+| Rahul    |  35000 |  3500 |
++----------+--------+-------+
+3 rows in set (0.00 sec)
+
+DELIMITER //
+CREATE FUNCTION get_grade(
+    marks INT
+)
+RETURNS VARCHAR(10)
+DETERMINISTIC
+BEGIN
+    DECLARE grade VARCHAR(10);
+
+    IF marks >= 90 THEN
+        SET grade = 'A';
+    ELSEIF marks >= 75 THEN
+        SET grade = 'B';
+    ELSE
+        SET grade = 'C';
+    END IF;
+
+    RETURN grade;
+END //
+Query OK, 0 rows affected (0.02 sec)
+DELIMITER ;
+
+SELECT get_grade(88);
++---------------+
+| get_grade(88) |
++---------------+
+| B             |
++---------------+
+1 row in set (0.00 sec)
