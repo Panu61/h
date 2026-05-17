@@ -1,0 +1,100 @@
+Implement Aggregate Functions using:
+● COUNT()
+● SUM()
+● AVG()
+● MAX()
+● MIN()
+
+CREATE DATABASE aggregate_db;
+Query OK, 1 row affected (0.01 sec)
+
+USE aggregate_db;
+Database changed
+
+CREATE TABLE student(
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(50),
+    department VARCHAR(50),
+    marks INT
+);
+Query OK, 0 rows affected (0.05 sec)
+
+INSERT INTO student
+VALUES
+(1,'Amit','Computer',85),
+(2,'Neha','IT',90),
+(3,'Rahul','Computer',75),
+(4,'Priya','Electronics',88),
+(5,'Sneha','IT',92);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+SELECT * FROM student;
++------------+--------------+-------------+-------+
+| student_id | student_name | department  | marks |
++------------+--------------+-------------+-------+
+|          1 | Amit         | Computer    |    85 |
+|          2 | Neha         | IT          |    90 |
+|          3 | Rahul        | Computer    |    75 |
+|          4 | Priya        | Electronics |    88 |
+|          5 | Sneha        | IT          |    92 |
++------------+--------------+-------------+-------+
+5 rows in set (0.00 sec)
+
+SELECT COUNT(*) AS total_students
+FROM student;
++----------------+
+| total_students |
++----------------+
+|              5 |
++----------------+
+1 row in set (0.00 sec)
+
+SELECT SUM(marks) AS total_marks
+FROM student;
++-------------+
+| total_marks |
++-------------+
+|         430 |
++-------------+
+1 row in set (0.00 sec)
+
+SELECT AVG(marks) AS average_marks
+FROM student;
++---------------+
+| average_marks |
++---------------+
+|       86.0000 |
++---------------+
+1 row in set (0.00 sec)
+
+SELECT MAX(marks) AS highest_marks
+FROM student;
++---------------+
+| highest_marks |
++---------------+
+|            92 |
++---------------+
+1 row in set (0.00 sec)
+
+SELECT MIN(marks) AS lowest_marks
+FROM student;
++--------------+
+| lowest_marks |
++--------------+
+|           75 |
++--------------+
+1 row in set (0.00 sec)
+
+SELECT department,
+       AVG(marks) AS average_marks
+FROM student
+GROUP BY department;
++-------------+---------------+
+| department  | average_marks |
++-------------+---------------+
+| Computer    |       80.0000 |
+| IT          |       91.0000 |
+| Electronics |       88.0000 |
++-------------+---------------+
+3 rows in set (0.00 sec)
