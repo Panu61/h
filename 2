@@ -1,0 +1,79 @@
+Create tables using Primary Key and Foreign Key constraints
+
+CREATE DATABASE company_db;
+Query OK, 1 row affected (0.01 sec)
+
+USE company_db;
+Database changed
+CREATE TABLE department(
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50),
+    location VARCHAR(50)
+);
+Query OK, 0 rows affected (0.05 sec)
+
+INSERT INTO department
+VALUES
+(101,'IT','Pune'),
+(102,'HR','Mumbai'),
+(103,'Sales','Delhi');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM department;
++---------+-----------+----------+
+| dept_id | dept_name | location |
++---------+-----------+----------+
+|     101 | IT        | Pune     |
+|     102 | HR        | Mumbai   |
+|     103 | Sales     | Delhi    |
++---------+-----------+----------+
+3 rows in set (0.00 sec)
+
+CREATE TABLE employee(
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    salary INT,
+    dept_id INT,
+    FOREIGN KEY(dept_id) REFERENCES department(dept_id)
+);
+Query OK, 0 rows affected (0.06 sec)
+
+INSERT INTO employee
+VALUES
+(1,'Amit',30000,101),
+(2,'Neha',40000,102),
+(3,'Rahul',35000,103);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+SELECT * FROM employee;
++--------+----------+--------+---------+
+| emp_id | emp_name | salary | dept_id |
++--------+----------+--------+---------+
+|      1 | Amit     |  30000 |     101 |
+|      2 | Neha     |  40000 |     102 |
+|      3 | Rahul    |  35000 |     103 |
++--------+----------+--------+---------+
+3 rows in set (0.00 sec)
+
+INSERT INTO employee
+VALUES
+(4,'Priya',45000,105);
+ERROR 1452 (23000): Cannot add or update a child row:
+a foreign key constraint fails
+
+SELECT employee.emp_name,
+       employee.salary,
+       department.dept_name
+FROM employee
+JOIN department
+ON employee.dept_id = department.dept_id;
++----------+--------+-----------+
+| emp_name | salary | dept_name |
++----------+--------+-----------+
+| Amit     |  30000 | IT        |
+| Neha     |  40000 | HR        |
+| Rahul    |  35000 | Sales     |
++----------+--------+-----------+
+3 rows in set (0.00 sec)
