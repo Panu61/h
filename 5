@@ -1,0 +1,96 @@
+Execute DDL and DML statements using Views.
+
+CREATE DATABASE view_db;
+Query OK, 1 row affected (0.01 sec)
+
+USE view_db;
+Database changed
+
+CREATE TABLE student(
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    department VARCHAR(50),
+    marks INT
+);
+Query OK, 0 rows affected (0.05 sec)
+
+INSERT INTO student
+VALUES
+(1,'Amit','Computer',85),
+(2,'Neha','IT',90),
+(3,'Rahul','Electronics',75),
+(4,'Priya','Computer',88);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+SELECT * FROM student;
++------------+--------+-------------+-------+
+| student_id | name   | department  | marks |
++------------+--------+-------------+-------+
+|          1 | Amit   | Computer    |    85 |
+|          2 | Neha   | IT          |    90 |
+|          3 | Rahul  | Electronics |    75 |
+|          4 | Priya  | Computer    |    88 |
++------------+--------+-------------+-------+
+4 rows in set (0.00 sec)
+
+CREATE VIEW student_view AS
+SELECT name, marks
+FROM student;
+Query OK, 0 rows affected (0.01 sec)
+
+SELECT * FROM student_view;
++--------+-------+
+| name   | marks |
++--------+-------+
+| Amit   |    85 |
+| Neha   |    90 |
+| Rahul  |    75 |
+| Priya  |    88 |
++--------+-------+
+4 rows in set (0.00 sec)
+
+UPDATE student_view
+SET marks = 95
+WHERE name = 'Neha';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+SELECT * FROM student_view;
++--------+-------+
+| name   | marks |
++--------+-------+
+| Amit   |    85 |
+| Neha   |    95 |
+| Rahul  |    75 |
+| Priya  |    88 |
++--------+-------+
+4 rows in set (0.00 sec)
+
+SELECT * FROM student;
++------------+--------+-------------+-------+
+| student_id | name   | department  | marks |
++------------+--------+-------------+-------+
+|          1 | Amit   | Computer    |    85 |
+|          2 | Neha   | IT          |    95 |
+|          3 | Rahul  | Electronics |    75 |
+|          4 | Priya  | Computer    |    88 |
++------------+--------+-------------+-------+
+4 rows in set (0.00 sec)
+
+DELETE FROM student_view
+WHERE name = 'Rahul';
+Query OK, 1 row affected (0.01 sec)
+
+SELECT * FROM student_view;
++--------+-------+
+| name   | marks |
++--------+-------+
+| Amit   |    85 |
+| Neha   |    95 |
+| Priya  |    88 |
++--------+-------+
+3 rows in set (0.00 sec)
+
+DROP VIEW student_view;
+Query OK, 0 rows affected (0.01 sec)
